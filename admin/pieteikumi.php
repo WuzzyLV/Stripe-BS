@@ -35,11 +35,11 @@ session_start();
     <div class="admin-top">
         <div>
             <input type="text" placeholder="Meklēšana">
-            <a class="btn-sm"></a>
+            <a class="btn-sm"><i class="fa-solid fa-magnifying-glass"></i></a>
         </div>
         <div>
             <a class="btn-sm" id="new-btn">
-                <i class="fa fa-plus"></i>Pievienot jaunu
+                <i class="fa fa-plus"></i> Pievienot jaunu
             </a>
         </div>
     </div>
