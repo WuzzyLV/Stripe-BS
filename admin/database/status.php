@@ -4,7 +4,7 @@
     function getLastApplications($size): array{
         require 'con_db.php';
 
-        $query = $savienojums->query("SELECT * FROM pieteikums LIMIT " . $size);
+        $query = $savienojums->query("SELECT * FROM pieteikums ORDER BY datums DESC LIMIT " . $size );
 
         $json = $query->fetch_all(MYSQLI_ASSOC);
 
