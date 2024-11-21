@@ -37,17 +37,18 @@ session_start();
        <div class="admin-grid">
                 <div class="user gray-bg">
                     <h2>Sveicināti, <?php echo $_SESSION['lietotajvards']; ?>!</h2>
-                    <p>Tava loma sistēmā: <?php
-                        require 'database/con_db.php';
-                        $query = $savienojums->prepare("SELECT * FROM lietotajs WHERE lietotajvards = ?");
-                        $query->bind_param("s", $_SESSION['lietotajvards']);
-                        $query->execute();
-                        $result = $query->get_result();
-                        $user = $result->fetch_assoc();
-                        echo $user['loma'] == "admin" ? "Administrātors" : "Moderators";
-                        $query->close();
-                        $savienojums->close();
-                        ?></p>
+                    <p>Tava loma sistēmā: 
+                        <?php
+                            require 'database/con_db.php';
+                            $query = $savienojums->prepare("SELECT * FROM lietotajs WHERE lietotajvards = ?");
+                            $query->bind_param("s", $_SESSION['lietotajvards']);
+                            $query->execute();
+                            $user = $query->get_result()->fetch_assoc();
+                            $query->close();
+                            $savienojums->close();
+                            echo $user['loma'] == "admin" ? "Administrātors" : "Moderators";
+                        ?>
+                    </p>
                 </div>
 
                 <div class="new gray-bg">
