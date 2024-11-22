@@ -23,7 +23,7 @@
                 'talrunis' => htmlspecialchars($ieraksts['talrunis']),
                 'apraksts' => htmlspecialchars($ieraksts['apraksts']),
                 'datums' => htmlspecialchars($ieraksts['datums']),
-                'statuss' => htmlspecialchars($ieraksts['statuss'])
+                'statuss' => htmlspecialchars($ieraksts['status'])
             );
         }
         $vaicajums->close();
