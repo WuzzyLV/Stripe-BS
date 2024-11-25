@@ -16,13 +16,16 @@ if(!empty($_GET['session_id'])){
 
         echo "2";
         if($payment_intent->status === 'succeeded'){
+            echo "3";
             $transactionID = $payment_intent->id;
             $statusMsg = `
                 <h2>Maksajums veikts veiksmigi!</h2>
                 <p>Lai turpmak iegutu pro privilegijas, veicot jaunu pieteikumu, izmantojiet so epastu: <b>${customer_email}</b></p>
                 <p>Maksajuma reference: ${transactionID}</p>
             `;
+            echo "4";
         }else{
+            echo "5";
             $statusMsg = "Ej bekot!";
         }
         echo $statusMsg;
