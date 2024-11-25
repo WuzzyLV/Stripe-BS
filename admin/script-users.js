@@ -51,7 +51,7 @@ function populateUsers(users) {
     $("#password-dropdown").hide();
     $("#password").prop("required", true);
     $("#password").show();
-    edit = false;
+    editingUser = false;
   });
 
   $(document).on("click", "#new-btn", (e) => {
