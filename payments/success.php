@@ -24,6 +24,7 @@ if(!empty($_GET['session_id'])){
                 <p>Maksajuma reference: ${transactionID}</p>
             `;
             echo "4";
+            var_dump($statusMsg);
         }else{
             echo "5";
             $statusMsg = "Ej bekot!";
