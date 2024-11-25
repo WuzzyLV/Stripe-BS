@@ -1,6 +1,8 @@
 <?php
 
 if(!empty($_GET['session_id'])){
+    echo '<h1>Maksajums veikts veiksmigi!</h1>';
+
     $session_id = $_GET['session_id'];
 
     require_once './../stripe-php/init.php';
@@ -30,5 +32,5 @@ if(!empty($_GET['session_id'])){
         echo "Nevar iegut maksajuma informaciju: " . $e->getMessage();
     }
 }else {
-    $statusMsg = "Maksajuma informacija nav pieejama!";
+    echo "Maksajuma informacija nav pieejama!";
 }
