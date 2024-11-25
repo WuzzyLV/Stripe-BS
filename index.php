@@ -230,7 +230,7 @@
                 Cena 99.99 EUR/gadā
             </div>
 
-            <a href="" class="btn-active">Iegādājies jau tagad!</a>
+            <a href="payments/checkout.php" class="btn-active">Iegādājies jau tagad!</a>
         </div>
      </div>
 
