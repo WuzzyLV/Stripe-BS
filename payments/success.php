@@ -29,4 +29,6 @@ if(!empty($_GET['session_id'])){
     }catch(Exception $e){
         echo "Nevar iegut maksajuma informaciju: " . $e->getMessage();
     }
+}else {
+    $statusMsg = "Maksajuma informacija nav pieejama!";
 }
