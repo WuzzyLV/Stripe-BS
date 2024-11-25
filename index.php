@@ -21,7 +21,7 @@
         </a>
         <div class="apply">
             <a class="btn" id="create-ticket-btn" data-target="#modal-ticket">Izveidot pieteikumu</a>
-            <a class="btn active" id="buy-pro-btn">Iegādāties PRO</a>
+            <a class="btn active" id="buy-pro-btn" data-target="#modal-pro">Iegādāties PRO</a>
             
         </div>
     </header>
@@ -72,7 +72,7 @@
         <div class="content">
             <h1 id="pro-plan-title">Iegādājies <span>PRO</span> plānu</h1>
             <p id="pro-plan-description">Izvēlies maksas plānu PRO, mūsu speciālisti ar Jums sazināsies daudz ātrāk nekā tas ir bezmaksas versijā! Turklāt visiem klātienes pakalpojumiem tiks piešķirta 50% atlaide.</p>
-            <a class="btn active" id="buy-pro-link">
+            <a class="btn active" id="buy-pro-link" data-target="#modal-pro">
                 <i class="fa fa-check-circle"></i> Iegādāties PRO tikai par 99<sup>99</sup> EUR/gadā
             </a>
         </div>
@@ -211,24 +211,49 @@
             </form>
         </div>
      </div>
+         <!-- Modal for ticket creation -->
+    <div class="modal" id="modal-pro">
+        <div class="modal-box">
+            <div class="close-modal" data-target="#modal-pro">
+                <i class="fa fa-times"></i>
+            </div>
+            <h2>Iegādājies <span>PRO</span> plānu!</h2>
+            <div class="buy-pro">
+                <p>Ieguvumi iegādājoties PRO versiju:</p>
+                <ul>
+                    <li><i class="fa-solid fa-check"></i>Komunikācija ar klientudažu minūsu laikā!</li>
+                    <li><i class="fa-solid fa-check"></i>50% atlade visiem klatienes pakalpojumiem</li>
+                    <li><i class="fa-solid fa-check"></i>Pieteikumu statusa un vēstures aplūkošana</li>
+                </ul>
+            </div>
+            <div class="buy-pro">
+                Cena 99.99 EUR/gadā
+            </div>
+
+            <a href="" class="btn-active">Iegādājies jau tagad!</a>
+        </div>
+     </div>
 
      <?php
-        if(isset($_SESSION['pazinojums']));
+        if(isset($_SESSION['pazinojums'])):
      ?>
 
-     <!-- <div class="modal modal-active" id="modal-message">
+     <div class="modal modal-active" id="modal-message">
         <div class="modal-box">
             <div class="close-modal" data-target="#modal-message">
                 <i class="fa fa-times"></i>
             </div>
-            <h2 id="">
+            <div id="">
                 <?php
                     echo $_SESSION['pazinojums'];
                     unset($_SESSION['pazinojums']);
                 ?>
 
-            </h2>
         </div>
-     </div> -->
+        </div>
+     </div>
+     <?php
+        endif;
+        ?>
 </body>
 </html>

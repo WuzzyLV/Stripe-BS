@@ -748,6 +748,37 @@ th:last-child {
   }
 }
 
+.notif {
+  font-size: 1.2rem;
+  text-align: center;
+  margin: 1rem 0;
+}
+
+.notif p {
+  background: var(--light-2);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-top: 1rem;
+}
+
+.buy-pro {
+  margin: 1rem 0;
+  padding: 1rem;
+  background: var(--light-1);
+  border-radius: 0.5rem;
+}
+
+.buy-pro ul {
+  list-style: none;
+  padding: 1rem;
+  font-family: ;
+}
+
+.buy-pro ul i {
+  color: var(--orange);
+  padding-right: 0.5rem;
+}
+
 @media (max-width: 1419px) {
   .admin-grid {
     grid-template-columns: 1fr 1fr;
