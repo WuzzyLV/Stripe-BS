@@ -23,15 +23,11 @@ if(!empty($_GET['session_id'])){
                 <p>Lai turpmak iegutu pro privilegijas, veicot jaunu pieteikumu, izmantojiet so epastu: <b>`.$customer_email.`</b></p>
                 <p>Maksajuma reference: `.$transactionID.`</p>
             `;
-            echo "4";
-            var_dump($statusMsg);
         }else{
             echo "5";
             $statusMsg = "Ej bekot!";
         }
-        var_dump($statusMsg);
         echo $statusMsg;
-        echo "6" . $statusMsg;
         
     }catch(Exception $e){
         echo "Nevar iegut maksajuma informaciju: " . $e->getMessage();
