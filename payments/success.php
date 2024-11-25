@@ -8,26 +8,21 @@ if(!empty($_GET['session_id'])){
     require_once "config.php";
 
     try{
-        $statusMsg = '';
-        echo "1";
         $checkout_session = \Stripe\Checkout\Session::retrieve($session_id);
         $customer_email = $checkout_session->customer_details->email;
         $payment_intent = \Stripe\PaymentIntent::retrieve($checkout_session->payment_intent);
 
-        echo "2";
         if($payment_intent->status === 'succeeded'){
-            echo "3";
             $transactionID = $payment_intent->id;
-            $statusMsg = `
+            echo `
                 <h2>Maksajums veikts veiksmigi!</h2>
                 <p>Lai turpmak iegutu pro privilegijas, veicot jaunu pieteikumu, izmantojiet so epastu: <b>`.$customer_email.`</b></p>
                 <p>Maksajuma reference: `.$transactionID.`</p>
             `;
         }else{
             echo "5";
-            $statusMsg = "Ej bekot!";
+            header("Location: ../..");
         }
-        echo $statusMsg;
         
     }catch(Exception $e){
         echo "Nevar iegut maksajuma informaciju: " . $e->getMessage();
