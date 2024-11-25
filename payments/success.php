@@ -20,7 +20,7 @@ if(!empty($_GET['session_id'])){
             $transactionID = $payment_intent->id;
             $statusMsg = `
                 <h2>Maksajums veikts veiksmigi!</h2>
-                <p>Lai turpmak iegutu pro privilegijas, veicot jaunu pieteikumu, izmantojiet so epastu: <b>`.$customer_email.<`/b></p>
+                <p>Lai turpmak iegutu pro privilegijas, veicot jaunu pieteikumu, izmantojiet so epastu: <b>`.$customer_email.`</b></p>
                 <p>Maksajuma reference: `.$transactionID.`</p>
             `;
             echo "4";
