@@ -7,8 +7,8 @@ if(!empty($_GET['session_id'])){
     require_once './../stripe-php/init.php';
     require_once "config.php";
 
-    $statusMsg = '123';
     try{
+        $statusMsg = '';
         echo "1";
         $checkout_session = \Stripe\Checkout\Session::retrieve($session_id);
         $customer_email = $checkout_session->customer_details->email;
@@ -20,8 +20,8 @@ if(!empty($_GET['session_id'])){
             $transactionID = $payment_intent->id;
             $statusMsg = `
                 <h2>Maksajums veikts veiksmigi!</h2>
-                <p>Lai turpmak iegutu pro privilegijas, veicot jaunu pieteikumu, izmantojiet so epastu: <b>${customer_email}</b></p>
-                <p>Maksajuma reference: ${transactionID}</p>
+                <p>Lai turpmak iegutu pro privilegijas, veicot jaunu pieteikumu, izmantojiet so epastu: <b>`.$customer_email.<`/b></p>
+                <p>Maksajuma reference: `.$transactionID.`</p>
             `;
             echo "4";
             var_dump($statusMsg);
