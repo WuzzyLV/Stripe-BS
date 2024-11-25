@@ -29,6 +29,7 @@ if(!empty($_GET['session_id'])){
             $statusMsg = "Ej bekot!";
         }
         echo $statusMsg;
+        echo "6";
         
     }catch(Exception $e){
         echo "Nevar iegut maksajuma informaciju: " . $e->getMessage();
