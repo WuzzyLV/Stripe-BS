@@ -28,6 +28,7 @@ if(!empty($_GET['session_id'])){
             echo "5";
             $statusMsg = "Ej bekot!";
         }
+        var_dump($statusMsg);
         echo $statusMsg;
         echo "6" . $statusMsg;
         
