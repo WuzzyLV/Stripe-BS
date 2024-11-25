@@ -1,18 +1,20 @@
 <?php
 
 if(!empty($_GET['session_id'])){
+    echo "<h1>Maksajuma statuss</h1>";
     $session_id = $_GET['session_id'];
 
     require_once './../stripe-php/init.php';
     require_once "config.php";
 
-    $statusMsg = '';
+    $statusMsg = '123';
     try{
-
+        echo "1";
         $checkout_session = \Stripe\Checkout\Session::retrieve($session_id);
         $customer_email = $checkout_session->customer_details->email;
         $payment_intent = \Stripe\PaymentIntent::retrieve($checkout_session->payment_intent);
 
+        echo "2";
         if($payment_intent->status === 'succeeded'){
             $transactionID = $payment_intent->id;
             $statusMsg = `
@@ -25,9 +27,6 @@ if(!empty($_GET['session_id'])){
         }
         echo $statusMsg;
         
- 
-
-
     }catch(Exception $e){
         echo "Nevar iegut maksajuma informaciju: " . $e->getMessage();
     }
