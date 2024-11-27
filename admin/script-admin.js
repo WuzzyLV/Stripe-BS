@@ -109,6 +109,7 @@ $(document).ready(function () {
   });
 
   $(document).on("click", "#new-btn", (e) => {
+    $("#pieteikumuForma").trigger("reset");
     $(".modal").css("display", "flex");
   });
 
@@ -123,6 +124,7 @@ $(document).ready(function () {
   });
 
   $("#pieteikumuForma").submit((e) => {
+    console.log("submit", edit);
     e.preventDefault();
     const postData = {
       vards: $("#vards").val(),
