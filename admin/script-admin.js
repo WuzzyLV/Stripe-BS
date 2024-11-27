@@ -1,16 +1,16 @@
-$(document).ready(function(){
-    let edit = false
+$(document).ready(function () {
+  let edit = false;
 
-    function fetchPieteikumi(){
-        console.log()
-        $.ajax({
-            url: 'database/pieteikumi_list.php',
-            type: 'GET',
-            success: function(response){
-                const pieteikumi = JSON.parse(response)
-                let template = ''
-                pieteikumi.forEach(pieteikums=>{
-                    template += `
+  function fetchPieteikumi(query) {
+    const url = query ? `database/pieteikumi_list.php?query=${encodeURIComponent(query)}` : "database/pieteikumi_list.php";
+    $.ajax({
+      url: url,
+      type: "GET",
+      success: function (response) {
+        const pieteikumi = JSON.parse(response);
+        let template = "";
+        pieteikumi.forEach((pieteikums) => {
+          template += `
                         <tr piet_ID="${pieteikums.id}">
                             <td>${pieteikums.id}</td>
                             <td>${pieteikums.vards}</td>
@@ -28,106 +28,99 @@ $(document).ready(function(){
                                 </a>
                             </td>
                         </tr>
-                    `
-                })
-                $('#pieteikumi').html(template);
-                        },
-            error: function(){
-                alert('Neizdevās ielādēt datus!')
-            }
-        })
+                    `;
+        });
+        $("#pieteikumi").html(template);
+      },
+      error: function () {
+        alert("Neizdevās ielādēt datus!");
+      },
+    });
+  }
+
+  fetchPieteikumi();
+
+  // on enter in search field submit
+  $("#search").keyup(function (event) {
+    if (event.key === "Enter") {
+      $("#search-btn").trigger("click");
     }
-
-    function fetchPieteikumiSak(){
-        console.log()
-        $.ajax({
-            url: 'database/pieteikumi_list.php',
-            type: 'GET',
-            success: function(response){
-                const pieteikumi = JSON.parse(response)
-                let template = ''
-                pieteikumi.forEach(pieteikums=>{
-                    template += `
-                        <tr piet_ID="${pieteikums.id}">
-                            <td>${pieteikums.vards}", "${pieteikums.uzvards}</td>
-                            <td>${pieteikums.datums}</td>
-                            <td>${pieteikums.statuss}</td>
-                        </tr>
-                    `
-                })
-                $('#pieteikumi-sak').html(template);
-                        },
-            error: function(){
-                alert('Neizdevās ielādēt datus!')
-            }
-        })
+  });
+  //search
+  $("#search-btn").click(function () {
+    let search = $("#search").val();
+    if (search != "") {
+      fetchPieteikumi(search);
+    } else {
+      fetchPieteikumi();
     }
+  });
 
+  $(document).on("click", ".pieteikums-item", (e) => {
+    $(".modal").css("display", "flex");
+    $(".editing-info").css("display", "flex");
+    const element = $(e.currentTarget).closest("tr");
+    const id = $(element).attr("piet_ID");
+    console.log(id);
 
-    fetchPieteikumi(),
-    fetchPieteikumiSak(),
+    $.post("database/pieteikums_single.php", { id }, (response) => {
+      edit = true;
+      const pieteikums = JSON.parse(response);
+      $("#vards").val(pieteikums.vards);
+      $("#uzvards").val(pieteikums.uzvards);
+      $("#epasts").val(pieteikums.epasts);
+      $("#talrunis").val(pieteikums.talrunis);
+      $("#apraksts").val(pieteikums.apraksts);
+      $("#statuss").val(pieteikums.statuss);
+      $("#piet_ID").val(pieteikums.id);
+      $(".created-info").text(`Pieteikums izveidots: ${pieteikums.datums} (IP: ${pieteikums.created_ip})`);
+      $(".edited-info").text(`Pēdējās izmaiņas pieteikumā: ${pieteikums.updated_at}`);
+    });
+  });
 
-    $(document).on('click', '.pieteikums-item', (e) =>{
-        $(".modal").css('display', 'flex')
-        const element = $(e.currentTarget).closest('tr')
-        const id = $(element).attr('piet_ID')
-        console.log(id)
+  $(document).on("click", ".close-modal", (e) => {
+    $(".modal").hide();
+    $(".editing-info").hide();
+    $("pieteikumuForma").trigger("reset");
+    edit = false;
+  });
 
-        $.post('database/pieteikums_single.php', {id}, (response)=>{
-            edit = true
-            const pieteikums = JSON.parse(response)
-            $('#vards').val(pieteikums.vards),
-            $('#uzvards').val(pieteikums.uzvards),
-            $('#epasts').val(pieteikums.epasts),
-            $('#talrunis').val(pieteikums.talrunis),
-            $('#apraksts').val(pieteikums.apraksts),
-            $('#statuss').val(pieteikums.statuss),
-            $('#piet_ID').val(pieteikums.id)
-        })
-    })
+  $(document).on("click", "#new-btn", (e) => {
+    $(".modal").css("display", "flex");
+  });
 
-    $(document).on('click', '.close-modal', (e) =>{
-        $(".modal").hide()
-        $("pieteikumuForma").trigger('reset')
-        edit = false
-    })
+  $(document).on("click", ".pieteikums-delete", (e) => {
+    if (confirm("Vai tiešām velies dzest?")) {
+      const element = $(e.currentTarget).closest("tr");
+      const id = $(element).attr("piet_ID");
+      $.post("database/pieteikums_delete.php", { id }, () => {
+        fetchPieteikumi();
+      });
+    }
+  });
 
-    $(document).on('click', '#new-btn', (e) =>{
-        $(".modal").css('display', 'flex')
-    })
+  $("#pieteikumuForma").submit((e) => {
+    e.preventDefault();
+    const postData = {
+      vards: $("#vards").val(),
+      uzvards: $("#uzvards").val(),
+      epasts: $("#epasts").val(),
+      talrunis: $("#talrunis").val(),
+      apraksts: $("#apraksts").val(),
+      statuss: $("#statuss").val(),
+      id: $("#piet_ID").val(),
+    };
 
-    $(document).on('click', '.pieteikums-delete', (e) =>{
-        if(confirm('Vai tiešām velies dzest?')){
-            const element = $(e.currentTarget).closest('tr')
-            const id = $(element).attr('piet_ID')
-            $.post('database/pieteikums_delete.php', {id}, () =>{
-                fetchPieteikumi()
-            })
-        }
-        })
+    const url = !edit ? "database/pieteikums_add.php" : "database/pieteikums_edit.php";
+    console.log(postData, url);
 
-        $('#pieteikumuForma').submit( e=>{
-            e.preventDefault()
-            const postData ={
-                vards: $('#vards').val(),
-                uzvards: $('#uzvards').val(),
-                epasts: $('#epasts').val(),
-                talrunis: $('#talrunis').val(),
-                apraksts: $('#apraksts').val(),
-                statuss: $('#statuss').val(),
-                id: $('#piet_ID').val()
-            }
-        
-            const url = !edit ? 'database/pieteikums_add.php' : 'database/pieteikums_edit.php'
-            console.log(postData, url)
-        
-            $.post(url, postData, () =>{
-                $(".modal").hide()
-                //reseto datus no formas pec aizveršanas
-                $("#pieteikumuForma").trigger('reset')
-                edit = false
-                fetchPieteikumi()
-            })
-        })
-
-})
+    $.post(url, postData, () => {
+      $(".modal").hide();
+      //reseto datus no formas pec aizveršanas
+      $("#pieteikumuForma").trigger("reset");
+      edit = false;
+      //   fetchPieteikumi();
+      $("#search-btn").trigger("click");
+    });
+  });
+});

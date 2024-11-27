@@ -24,8 +24,8 @@ session_start();
 
     <div class="admin-top">
         <div>
-            <input type="text" placeholder="Meklēšana">
-            <a class="btn-sm"><i class="fa-solid fa-magnifying-glass"></i></a>
+            <input type="text" placeholder="Meklēšana" id="search">
+            <button class="btn-sm" id="search-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
         </div>
         <div>
             <a class="btn-sm" id="new-btn">
@@ -81,6 +81,10 @@ session_start();
                 </div>
                 <INPUt type="hidden" id="piet_ID"></INPUt>
                 <button type="submit"  class="btn active" id="submit-button">Saglabāt</button>
+                <div class="editing-info">
+                    <p class="created-info"></p>
+                    <p class="edited-info"></p>
+                </div>
             </form>
         </div>
      </div>

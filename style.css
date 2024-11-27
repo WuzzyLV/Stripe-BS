@@ -771,7 +771,21 @@ th:last-child {
 .buy-pro ul {
   list-style: none;
   padding: 1rem;
-  font-family: ;
+}
+.editing-info {
+  display: hidden; /* changed by js */
+  justify-content: space-between;
+  align-items: center;
+  color: var(--dark-2);
+  font-size: 0.8rem;
+  padding-top: 1rem;
+}
+
+.created-info {
+  text-align: left;
+}
+.editing-info {
+  text-align: right;
 }
 
 .buy-pro ul i {

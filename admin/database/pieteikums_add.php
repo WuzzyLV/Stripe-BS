@@ -9,9 +9,18 @@ if(isset($_POST['id'])){
     $p_apraksts = htmlspecialchars($_POST['apraksts']);
     $p_statuss = htmlspecialchars($_POST['statuss']);
 
-    $vaicajums = $savienojums->prepare("INSERT INTO pieteikums(vards, uzvards, epasts, talrunis, apraksts, status) VALUES (?, ?, ?, ?, ?, ?)");
-    $vaicajums->bind_param("sssiss", $p_vards, $p_uzvards, $p_epasts, $p_talrunis, $p_apraksts, $p_statuss);
+    $ip = $_SERVER['REMOTE_ADDR'];
+    if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+        $ip = $_SERVER['HTTP_CLIENT_IP'];
+    } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+        $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+    }
 
+    $vaicajums = $savienojums->prepare("INSERT INTO pieteikums(vards, uzvards, epasts, talrunis, apraksts, status, created_ip) VALUES (?, ?, ?, ?, ?, ?, ?)");
+    $vaicajums->bind_param("sssisss", $p_vards, $p_uzvards, $p_epasts, $p_talrunis, $p_apraksts, $p_statuss, $ip);
+
+
+    
     if($vaicajums->execute()){
         echo "Veiksmīgi pievienots!";
     }else{

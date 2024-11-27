@@ -1,6 +1,8 @@
 <?php
     require 'con_db.php';
 
+    require_once 'utils.php';   
+    
     try{
 
     if(isset($_POST['id'])){
@@ -22,7 +24,9 @@
                 'epasts' => htmlspecialchars($ieraksts['epasts']),
                 'talrunis' => htmlspecialchars($ieraksts['talrunis']),
                 'apraksts' => htmlspecialchars($ieraksts['apraksts']),
-                'datums' => htmlspecialchars($ieraksts['datums']),
+                'datums' => htmlspecialchars(formatDateWithHour($ieraksts['datums'])),
+                'updated_at' => htmlspecialchars(formatDateWithHour($ieraksts['updated_at'])),
+                'created_ip' => htmlspecialchars($ieraksts['created_ip']),
                 'statuss' => htmlspecialchars($ieraksts['status'])
             );
         }
