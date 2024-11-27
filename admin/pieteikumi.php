@@ -23,8 +23,11 @@ session_start();
     <?php require 'components/header.php'; ?>
 
     <div class="admin-top">
-        <div>
-            <input type="text" placeholder="Meklēšana" id="search">
+        <div class="search-container">
+            <div >
+                <input type="text" placeholder="Meklēšana" id="search"></input>
+                <button id="search-clear"><i class="fa-solid fa-xmark"></i></button>
+            </div>
             <button class="btn-sm" id="search-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
         </div>
         <div>

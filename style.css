@@ -790,6 +790,37 @@ th:last-child {
   }
 }
 
+#search-clear {
+  /* margin-left: -2rem; */
+  display: none;
+  margin-left: -2rem;
+  background: none;
+  color: var(--dark-1);
+  cursor: pointer;
+  padding: 2px;
+  transition: all 0.01s linear;
+  flex-wrap: nowrap;
+}
+#search-clear:hover {
+  color: var(--orange);
+}
+
+.search-container {
+  display: flex;
+  flex-wrap: nowrap;
+}
+.search-container div {
+  margin-right: 0.5rem;
+  flex-wrap: nowrap;
+}
+
+/* less than 340px hide cross !important */
+@media (max-width: 340px) {
+  #search-clear {
+    display: none !important;
+  }
+}
+
 .loading {
   animation: rotate 1s linear infinite;
 }

@@ -50,8 +50,19 @@ $(document).ready(function () {
 
   fetchPieteikumi();
 
+  $("#search-clear").click(function () {
+    $("#search").val("");
+    $("#search-clear").hide();
+    $("#search-btn").trigger("click");
+  });
   // on enter in search field submit
   $("#search").keyup(function (event) {
+    //check if is null
+    if ($("#search").val() === "") {
+      $("#search-clear").hide();
+    } else {
+      $("#search-clear").show();
+    }
     if (event.key === "Enter") {
       $("#search-btn").trigger("click");
     }
