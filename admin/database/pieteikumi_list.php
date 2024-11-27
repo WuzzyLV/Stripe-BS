@@ -14,7 +14,7 @@
             talrunis LIKE '%$query%'";
     }
 
-    $vaicajums .= " ORDER BY pieteikums_id DESC";
+    $vaicajums = $vaicajums .  " ORDER BY pieteikums_id DESC";
 
     $rezultats = mysqli_query($savienojums, $vaicajums);
 
