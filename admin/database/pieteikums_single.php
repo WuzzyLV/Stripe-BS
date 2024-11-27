@@ -26,7 +26,7 @@
                 'apraksts' => htmlspecialchars($ieraksts['apraksts']),
                 'datums' => htmlspecialchars(formatDateWithHour($ieraksts['datums'])),
                 'updated_at' => htmlspecialchars(formatDateWithHour($ieraksts['updated_at'])),
-                'created_ip' => htmlspecialchars($ieraksts['created_ip']),
+                'created_ip' => htmlspecialchars($ieraksts['created_ip'] ? $ieraksts['created_ip'] : 'Nav'),
                 'statuss' => htmlspecialchars($ieraksts['status'])
             );
         }
