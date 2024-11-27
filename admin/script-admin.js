@@ -1,16 +1,23 @@
 $(document).ready(function () {
   let edit = false;
 
-  function fetchPieteikumi(query) {
+  async function fetchPieteikumi(query) {
     const url = query ? `database/pieteikumi_list.php?query=${encodeURIComponent(query)}` : "database/pieteikumi_list.php";
-    $.ajax({
-      url: url,
-      type: "GET",
-      success: function (response) {
-        const pieteikumi = JSON.parse(response);
-        let template = "";
-        pieteikumi.forEach((pieteikums) => {
-          template += `
+
+    return new Promise((resolve, reject) => {
+      $.ajax({
+        url: url,
+        type: "GET",
+        success: function (response) {
+          const list = JSON.parse(response);
+          if (list.length === 0) {
+            $("#pieteikumi").html("<tr><td colspan='8'>Nav rezultātu</td></tr>");
+            resolve(); // Resolve the promise
+            return;
+          }
+          let template = "";
+          list.forEach((pieteikums) => {
+            template += `
                         <tr piet_ID="${pieteikums.id}">
                             <td>${pieteikums.id}</td>
                             <td>${pieteikums.vards}</td>
@@ -29,12 +36,15 @@ $(document).ready(function () {
                             </td>
                         </tr>
                     `;
-        });
-        $("#pieteikumi").html(template);
-      },
-      error: function () {
-        alert("Neizdevās ielādēt datus!");
-      },
+          });
+          $("#pieteikumi").html(template);
+          resolve(); // Resolve the promise when successful
+        },
+        error: function (error) {
+          alert("Neizdevās ielādēt datus!");
+          reject(error); // Reject the promise in case of error
+        },
+      });
     });
   }
 
@@ -47,13 +57,19 @@ $(document).ready(function () {
     }
   });
   //search
-  $("#search-btn").click(function () {
+  $("#search-btn").click(async function () {
     let search = $("#search").val();
+    $("#search-btn").html("<i class='fa-regular fa-face-smile loading'></i>");
     if (search != "") {
-      fetchPieteikumi(search);
+      await fetchPieteikumi(search);
     } else {
-      fetchPieteikumi();
+      await fetchPieteikumi();
     }
+    //wait 1 second
+    setTimeout(() => {
+      $("#search-btn").html("<i class='fa-solid fa-magnifying-glass'></i>");
+    }, 15000);
+    // $("#search-btn").html("<i class='fa-solid fa-magnifying-glass'></i>");
   });
 
   $(document).on("click", ".pieteikums-item", (e) => {
