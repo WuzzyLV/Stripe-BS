@@ -65,11 +65,7 @@ $(document).ready(function () {
     } else {
       await fetchPieteikumi();
     }
-    //wait 1 second
-    setTimeout(() => {
-      $("#search-btn").html("<i class='fa-solid fa-magnifying-glass'></i>");
-    }, 15000);
-    // $("#search-btn").html("<i class='fa-solid fa-magnifying-glass'></i>");
+    $("#search-btn").html("<i class='fa-solid fa-magnifying-glass'></i>");
   });
 
   $(document).on("click", ".pieteikums-item", (e) => {
