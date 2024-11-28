@@ -42,7 +42,7 @@ while ($ieraksts = $rezultats->fetch_assoc()) {
         'talrunis' => htmlspecialchars($ieraksts['talrunis']),
         'datums' => htmlspecialchars($ieraksts['datums']),
         'statuss' => htmlspecialchars($ieraksts['status']),
-        'is_pro' => (bool)$ieraksts['is_pro'] // Convert the result to boolean for JSON output
+        'pro' => (bool)$ieraksts['is_pro'] // Convert the result to boolean for JSON output
     );
 }
 
