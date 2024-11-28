@@ -781,6 +781,10 @@ th:last-child {
   padding-top: 1rem;
 }
 
+.pro {
+  background-color: gold;
+}
+
 @keyframes rotate {
   0% {
     transform: rotate(0deg);
