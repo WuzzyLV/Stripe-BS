@@ -31,6 +31,7 @@ try {
         // Check if this payment reference already exists
         $query = $savienojums->prepare("SELECT end_date FROM payments WHERE email = ? AND payment_reference = ?");
         $query->execute([$customer_email, $transactionID]);
+        echo var_dump($query);
 
         if ($query->num_rows() > 0) {
             // Payment exists; update end_date if not expired
