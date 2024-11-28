@@ -47,6 +47,8 @@ try {
             $update_query = $savienojums->prepare("UPDATE payments SET end_date = ? WHERE email = ? AND payment_reference = ?");
             $update_query->execute([$end_date, $customer_email, $transactionID]);
         } else {
+            echo "inserting";
+            $query->close();
             // New payment; insert into the database
             $insert_query = $savienojums->prepare("INSERT INTO payments (email, payment_reference, timestamp, end_date) VALUES (?, ?, NOW(), ?)");
             $insert_query->execute([$customer_email, $transactionID, $end_date]);
