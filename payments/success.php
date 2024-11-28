@@ -29,10 +29,8 @@ try {
         $end_date = $current_date->modify('+1 year')->format('Y-m-d');
 
         // Check if this payment reference already exists
-        $query = $savienojums->prepare("SELECT end_date FROM payments WHERE email = :email AND payment_reference = :payment_reference");
-        $query->bindParam(':email', $customer_email);
-        $query->bindParam(':payment_reference', $transactionID);
-        $query->execute();
+        $query = $savienojums->prepare("SELECT end_date FROM payments WHERE email = ? AND payment_reference = ?");
+        $query->execute([$customer_email, $transactionID]);
 
         if ($query->rowCount() > 0) {
             // Payment exists; update end_date if not expired
@@ -44,18 +42,12 @@ try {
                 $end_date = $existing_end_date->format('Y-m-d');
             }
 
-            $update_query = $savienojums->prepare("UPDATE payments SET end_date = :end_date WHERE email = :email AND payment_reference = :payment_reference");
-            $update_query->bindParam(':end_date', $end_date);
-            $update_query->bindParam(':email', $customer_email);
-            $update_query->bindParam(':payment_reference', $transactionID);
-            $update_query->execute();
+            $update_query = $savienojums->prepare("UPDATE payments SET end_date = ? WHERE email = ? AND payment_reference = ?");
+            $update_query->execute([$end_date, $customer_email, $transactionID]);
         } else {
             // New payment; insert into the database
-            $insert_query = $savienojums->prepare("INSERT INTO payments (email, payment_reference, timestamp, end_date) VALUES (:email, :payment_reference, NOW(), :end_date)");
-            $insert_query->bindParam(':email', $customer_email);
-            $insert_query->bindParam(':payment_reference', $transactionID);
-            $insert_query->bindParam(':end_date', $end_date);
-            $insert_query->execute();
+            $insert_query = $savienojums->prepare("INSERT INTO payments (email, payment_reference, timestamp, end_date) VALUES (?, ?, NOW(), ?)");
+            $insert_query->execute([$customer_email, $transactionID, $end_date]);
         }
 
         echo "
