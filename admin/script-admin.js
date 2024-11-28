@@ -18,7 +18,7 @@ $(document).ready(function () {
           let template = "";
           list.forEach((pieteikums) => {
             template += `
-                        <tr piet_ID="${pieteikums.id}">
+                        <tr piet_ID="${pieteikums.id}" ${pieteikums.pro ? "class='pro'" : ""}>
                             <td>${pieteikums.id}</td>
                             <td>${pieteikums.vards}</td>
                             <td>${pieteikums.uzvards}</td>

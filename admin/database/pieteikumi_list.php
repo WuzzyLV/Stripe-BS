@@ -5,7 +5,7 @@ require 'con_db.php';
 $query = isset($_GET['query']) ? htmlspecialchars(trim($_GET['query'])) : '';
 
 $vaicajums = "SELECT p.pieteikums_id, p.vards, p.uzvards, p.epasts, p.talrunis, p.datums, p.status, 
-              IF(payments.end_date > NOW(), 1, 0) AS is_pro
+              IF(payments.end_date >= CURDATE(), 1, 0) AS is_pro
               FROM pieteikums p
               LEFT JOIN payments ON p.epasts = payments.email";
 
@@ -48,3 +48,4 @@ while ($ieraksts = $rezultats->fetch_assoc()) {
 
 // Output the JSON encoded result
 echo json_encode($json);
+?>
