@@ -46,6 +46,7 @@ try {
         $query->execute([$customer_email]);
 
         if ($query->num_rows() > 0) {
+            echo "Existing payment found";
             // Extend the end_date if the last payment is not expired
             $existing_payment = $query->get_result()->fetch_assoc();
             $existing_end_date = new DateTime($existing_payment['end_date']);
