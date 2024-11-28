@@ -23,12 +23,10 @@ try {
     // Check the payment status
     if ($payment_intent->status === 'succeeded') {
         $transactionID = $payment_intent->id;
-        echo $transactionID;
 
         // Check if this payment reference already exists
         $query = $savienojums->prepare("SELECT * FROM payments WHERE email = ? AND payment_reference = ?");
         $query->execute([$customer_email, $transactionID]);
-        var_dump($query);
 
         if ($query->num_rows() > 0) {
             // Payment is a duplicate

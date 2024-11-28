@@ -1,40 +1,50 @@
 <?php
-    require 'con_db.php';
+require 'con_db.php';
 
-    $query = isset($_GET['query']) ? htmlspecialchars(trim($_GET['query'])) : '';
+// Get the search query from the GET request
+$query = isset($_GET['query']) ? htmlspecialchars(trim($_GET['query'])) : '';
 
-    $vaicajums = "SELECT * FROM pieteikums";
+$vaicajums = "SELECT p.pieteikums_id, p.vards, p.uzvards, p.epasts, p.talrunis, p.datums, p.status, 
+              IF(payments.end_date > NOW(), 1, 0) AS is_pro
+              FROM pieteikums p
+              LEFT JOIN payments ON p.epasts = payments.email";
 
-    if (!empty($query)) {
-        $query = $savienojums->real_escape_string($query); 
-        $vaicajums .= " WHERE 
-            vards LIKE '%$query%' OR 
-            uzvards LIKE '%$query%' OR 
-            epasts LIKE '%$query%' OR 
-            talrunis LIKE '%$query%'";
-    }
+// If a search query is provided, add a WHERE condition to filter results
+if (!empty($query)) {
+    $query = $savienojums->real_escape_string($query); // Escape special characters to prevent SQL injection
+    $vaicajums .= " WHERE 
+                    p.vards LIKE '%$query%' OR 
+                    p.uzvards LIKE '%$query%' OR 
+                    p.epasts LIKE '%$query%' OR 
+                    p.talrunis LIKE '%$query%'";
+}
 
-    $vaicajums = $vaicajums .  " ORDER BY pieteikums_id DESC";
+// Order the results by the application ID in descending order
+$vaicajums .= " ORDER BY p.pieteikums_id DESC";
 
-    $rezultats = mysqli_query($savienojums, $vaicajums);
+// Execute the query
+$rezultats = mysqli_query($savienojums, $vaicajums);
 
-    if (!$rezultats) {
-        die('Kļūda: ' . mysqli_error($savienojums));
-    }
+// Check for errors in the query execution
+if (!$rezultats) {
+    die('Kļūda: ' . mysqli_error($savienojums));
+}
 
+$json = array();
 
-    $json = array();
-    while ($ieraksts = $rezultats->fetch_assoc()) {
-        $json[] = array(
-            'id' => htmlspecialchars($ieraksts['pieteikums_id']),
-            'vards' => htmlspecialchars($ieraksts['vards']),
-            'uzvards' => htmlspecialchars($ieraksts['uzvards']),
-            'epasts' => htmlspecialchars($ieraksts['epasts']),
-            'talrunis' => htmlspecialchars($ieraksts['talrunis']),
-            'datums' => htmlspecialchars($ieraksts['datums']),
-            'statuss' => htmlspecialchars($ieraksts['status'])
-        );
-    }
+// Fetch the results and build the response array
+while ($ieraksts = $rezultats->fetch_assoc()) {
+    $json[] = array(
+        'id' => htmlspecialchars($ieraksts['pieteikums_id']),
+        'vards' => htmlspecialchars($ieraksts['vards']),
+        'uzvards' => htmlspecialchars($ieraksts['uzvards']),
+        'epasts' => htmlspecialchars($ieraksts['epasts']),
+        'talrunis' => htmlspecialchars($ieraksts['talrunis']),
+        'datums' => htmlspecialchars($ieraksts['datums']),
+        'statuss' => htmlspecialchars($ieraksts['status']),
+        'is_pro' => (bool)$ieraksts['is_pro'] // Convert the result to boolean for JSON output
+    );
+}
 
-    echo json_encode($json);
-
+// Output the JSON encoded result
+echo json_encode($json);
