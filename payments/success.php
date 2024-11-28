@@ -34,7 +34,8 @@ try {
 
         if ($query->num_rows() > 0) {
             // Payment exists; update end_date if not expired
-            $existing_payment = $query->fetch(PDO::FETCH_ASSOC);
+            $existing_payment = $query->fetch();
+            $existing_payment = $query->get_result()->fetch_assoc();
             $existing_end_date = new DateTime($existing_payment['end_date']);
             if ($existing_end_date > new DateTime()) {
                 // Extend by another year if not expired
