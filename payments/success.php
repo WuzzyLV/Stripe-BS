@@ -28,6 +28,7 @@ try {
         // Check if this payment reference already exists
         $query = $savienojums->prepare("SELECT * FROM payments WHERE email = ? AND payment_reference = ?");
         $query->execute([$customer_email, $transactionID]);
+        var_dump($query);
 
         if ($query->num_rows() > 0) {
             // Payment is a duplicate
