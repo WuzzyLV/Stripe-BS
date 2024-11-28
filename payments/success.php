@@ -24,35 +24,37 @@ try {
     if ($payment_intent->status === 'succeeded') {
         $transactionID = $payment_intent->id;
 
+        // Check if this payment reference already exists
+        $query = $savienojums->prepare("SELECT * FROM payments WHERE email = ? AND payment_reference = ?");
+        $query->execute([$customer_email, $transactionID]);
+
+        if ($query->num_rows() > 0) {
+            // Payment is a duplicate
+            echo "<p>Maksājums jau veikts ar šo atsauci! Atkārtojiet darbību ar citu maksājumu atsauci.</p>";
+            exit;
+        }
+
         // Calculate end_date (current date + 1 year)
         $current_date = new DateTime();
         $end_date = $current_date->modify('+1 year')->format('Y-m-d');
 
-        // Check if this payment reference already exists
-        $query = $savienojums->prepare("SELECT end_date FROM payments WHERE email = ? AND payment_reference = ?");
-        $query->execute([$customer_email, $transactionID]);
-        echo var_dump($query);
+        // Check if the user already has an active payment
+        $query = $savienojums->prepare("SELECT end_date FROM payments WHERE email = ?");
+        $query->execute([$customer_email]);
 
         if ($query->num_rows() > 0) {
-            // Payment exists; update end_date if not expired
-            $existing_payment = $query->fetch();
+            // Extend the end_date if the last payment is not expired
             $existing_payment = $query->get_result()->fetch_assoc();
             $existing_end_date = new DateTime($existing_payment['end_date']);
             if ($existing_end_date > new DateTime()) {
-                // Extend by another year if not expired
                 $existing_end_date->modify('+1 year');
                 $end_date = $existing_end_date->format('Y-m-d');
             }
-
-            $update_query = $savienojums->prepare("UPDATE payments SET end_date = ? WHERE email = ? AND payment_reference = ?");
-            $update_query->execute([$end_date, $customer_email, $transactionID]);
-        } else {
-            echo "inserting";
-            $query->close();
-            // New payment; insert into the database
-            $insert_query = $savienojums->prepare("INSERT INTO payments (email, payment_reference, timestamp, end_date) VALUES (?, ?, NOW(), ?)");
-            $insert_query->execute([$customer_email, $transactionID, $end_date]);
         }
+
+        // Insert or update payment record
+        $insert_query = $savienojums->prepare("INSERT INTO payments (email, payment_reference, timestamp, end_date) VALUES (?, ?, NOW(), ?)");
+        $insert_query->execute([$customer_email, $transactionID, $end_date]);
 
         echo "
             <h2>Maksājums veikts veiksmīgi!</h2>
