@@ -33,6 +33,7 @@ try {
             echo "<p>Maksājums jau veikts ar šo atsauci! Atkārtojiet darbību ar citu maksājumu atsauci.</p>";
             exit;
         }
+        $query->close();
 
         // Calculate end_date (current date + 1 year)
         $current_date = new DateTime();
@@ -51,6 +52,7 @@ try {
                 $end_date = $existing_end_date->format('Y-m-d');
             }
         }
+        $query->close();
 
         // Insert or update payment record
         $insert_query = $savienojums->prepare("INSERT INTO payments (email, payment_reference, timestamp, end_date) VALUES (?, ?, NOW(), ?)");
