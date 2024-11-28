@@ -32,7 +32,7 @@ try {
         $query = $savienojums->prepare("SELECT end_date FROM payments WHERE email = ? AND payment_reference = ?");
         $query->execute([$customer_email, $transactionID]);
 
-        if ($query->rowCount() > 0) {
+        if ($query->num_rows() > 0) {
             // Payment exists; update end_date if not expired
             $existing_payment = $query->fetch(PDO::FETCH_ASSOC);
             $existing_end_date = new DateTime($existing_payment['end_date']);
