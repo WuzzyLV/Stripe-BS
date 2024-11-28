@@ -55,6 +55,10 @@ try {
             }
         }
         $query->close();
+        //delete old payment
+        $query = $savienojums->prepare("DELETE FROM payments WHERE email = ?");
+        $query->execute([$customer_email]);
+        $query->close();
 
         // Insert or update payment record
         $insert_query = $savienojums->prepare("INSERT INTO payments (email, payment_reference, timestamp, end_date) VALUES (?, ?, NOW(), ?)");
